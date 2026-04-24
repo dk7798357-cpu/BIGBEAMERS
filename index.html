@@ -10,7 +10,10 @@
   *{box-sizing:border-box;margin:0;padding:0}  
   html,body{background:#07060b;color:#e9e7ff;font-family:'Inter',sans-serif;min-height:100%;overflow-x:hidden}  
   button{font-family:inherit;cursor:pointer;border:0}  
-  a{color:inherit;text-decoration:none}  .bg-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;filter:brightness(0.45) saturate(1.1)}
+  a{color:inherit;text-decoration:none}  /* GPU Acceleration to stop the lag */
+.bg-video, .floating, .tut-card { transform: translateZ(0); }
+
+.bg-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;filter:brightness(0.45) saturate(1.1)}
 .bg-overlay{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 30%,rgba(120,70,200,.2),transparent 60%),radial-gradient(40% 35% at 80% 80%,rgba(60,220,220,.1),transparent 60%),linear-gradient(180deg,rgba(6,4,12,.55),rgba(5,3,12,.75) 45%,rgba(5,3,12,.88))}
 
 .container{position:relative;z-index:10;max-width:1100px;margin:0 auto;padding:32px 20px}
@@ -20,8 +23,10 @@
 .brand{font-family:'Bungee',sans-serif;font-size:56px;line-height:.95;background:linear-gradient(180deg,#cfc0ff 0%,#a78bfa 45%,#7c5cff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.02em;text-shadow:0 0 30px rgba(140,100,255,.25)}
 @media(min-width:768px){.brand{font-size:88px}}
 .subtitle{color:#b9b6d6;font-size:14px;margin-top:4px}
+
 .discord-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;margin-top:16px;border-radius:8px;background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;font-weight:700;letter-spacing:.12em;font-size:12px;text-transform:uppercase;box-shadow:0 6px 20px rgba(124,58,237,.35);transition:transform .15s ease,filter .15s ease}
 .discord-btn:hover{transform:translateY(-1px);filter:brightness(1.1)}
+
 .volume-toggle{width:42px;height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.3);color:#5eead4;transition:background .15s ease}
 .volume-toggle:hover{background:rgba(45,212,191,.18)}
 
@@ -40,6 +45,10 @@
 @media(min-width:768px){.grid2{grid-template-columns:repeat(2,1fr)}}
 .gen-btn{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;width:100%;border-radius:10px;font-weight:700;letter-spacing:.08em;color:#fff;font-size:14px;text-transform:uppercase;transition:transform .18s ease,filter .18s ease}
 .gen-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+
+/* NEW MAIN GENERATOR COLOR */
+.b-splunk{background:linear-gradient(90deg,#facc15,#eab308);color:#000!important;box-shadow:0 8px 24px rgba(234,179,8,.3)}
+
 .b-immortal{background:linear-gradient(90deg,#06b6d4,#2563eb);box-shadow:0 8px 24px rgba(37,99,235,.35)}
 .b-injuries{background:linear-gradient(90deg,#ef4444,#f97316);box-shadow:0 8px 24px rgba(239,68,68,.35)}
 .b-shockify{background:linear-gradient(90deg,#f59e0b,#eab308);box-shadow:0 8px 24px rgba(245,158,11,.35)}
@@ -48,132 +57,123 @@
 .b-tut1{background:linear-gradient(90deg,#3b82f6,#60a5fa);box-shadow:0 8px 24px rgba(59,130,246,.35)}
 .b-tut2{background:linear-gradient(90deg,#10b981,#34d399);box-shadow:0 8px 24px rgba(16,185,129,.35)}
 
-.refresher{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;border-radius:10px;background:rgba(20,10,20,.4);border:1px solid rgba(236,72,153,.35);color:#f5f5f5;font-weight:600;transition:background .2s ease,border-color .2s ease}
-.refresher:hover{background:rgba(236,72,153,.08);border-color:rgba(236,72,153,.6)}
+.refresher{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 16px;border-radius:10px;background:rgba(20,10,20,.4);border:1px solid rgba(236,72,153,.35);color:#f5f5f5;font-weight:600}
 .pills{display:flex;gap:12px;justify-content:center;margin-top:16px}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid rgba(94,234,212,.3);color:#5eead4;font-size:11px;font-weight:600;background:rgba(45,212,191,.06)}
 
 .grid3{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:32px}
 @media(min-width:768px){.grid3{grid-template-columns:repeat(3,1fr)}}
 .feature{padding:22px;border-radius:12px;background:linear-gradient(180deg,rgba(18,16,30,.7),rgba(12,10,22,.7));border:1px solid rgba(94,234,212,.14);text-align:center}
-.feature-ico{width:46px;height:46px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.3);color:#5eead4;margin-bottom:10px;font-size:20px}
 .feature h4{color:#fff;font-size:18px;font-weight:700}
 .feature p{color:#9a97bd;font-size:14px;margin-top:4px}
 
-.footer{font-size:12px;color:#6f6c8b;padding-bottom:24px}
-.intro-back{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(4,3,10,.85);backdrop-filter:blur(12px)}
-.intro-card{width:min(92vw,640px);border-radius:18px;overflow:hidden;background:#0a0812;border:1px solid rgba(167,139,250,.25);box-shadow:0 30px 80px rgba(0,0,0,.6)}
-.intro-video-wrap{position:relative;width:100%;padding-top:56.25%;background:#000}
-.intro-video-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.intro-footer{padding:22px 24px 28px;text-align:center;background:linear-gradient(180deg,#0a0812,#07050e)}
-.intro-title{font-family:'Bungee',sans-serif;font-size:clamp(32px,6vw,56px);background:linear-gradient(180deg,#ff8a65,#e53935);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.04em}
-.intro-sub{color:rgba(255,255,255,.8);font-size:12px;letter-spacing:.2em;font-weight:600;text-transform:uppercase;margin:8px 0 18px}
-.hop-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 28px;background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border:2px solid #f59e0b;border-radius:6px;font-weight:800;letter-spacing:.2em;font-size:16px;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 10px 30px rgba(220,38,38,.45)}
-.hop-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(220,38,38,.55)}
-.intro-hint{margin-top:14px;color:rgba(255,255,255,.5);font-size:11px;letter-spacing:.22em;font-weight:600;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px}
-
-.floating{position:fixed;top:0;left:0;width:150px;z-index:60;border-radius:10px;overflow:hidden;background:#000;border:1px solid rgba(167,139,250,.35);box-shadow:0 12px 30px rgba(0,0,0,.55),0 0 20px rgba(124,58,237,.22);user-select:none;will-change:transform;transition:width .18s ease;display:none}
+/* Fixed Floating Styles for Smoothness */
+.floating{position:fixed;top:0;left:0;width:160px;z-index:60;border-radius:10px;overflow:hidden;background:#000;border:1px solid rgba(167,139,250,.35);display:none;will-change:transform;touch-action:none}
 .floating.show{display:block}
-.f-header{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:linear-gradient(90deg,rgba(124,58,237,.45),rgba(236,72,153,.3));cursor:grab;font-weight:700;letter-spacing:.12em;color:#fff;text-transform:uppercase;font-size:9px;touch-action:none}
-.f-header:active{cursor:grabbing}
-.f-body{position:relative;width:100%;padding-top:56.25%;background:#000}
-.f-body video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.f-btn{width:16px;height:16px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);color:#fff;transition:background .15s ease;margin-left:2px;font-size:11px}
-.f-btn:hover{background:rgba(255,255,255,.2)}
-.f-btn.close:hover{background:rgba(239,68,68,.8)}
+.f-header{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:linear-gradient(90deg,rgba(124,58,237,.45),rgba(236,72,153,.3));cursor:grab;font-weight:700;color:#fff;text-transform:uppercase;font-size:9px}
+.f-body{position:relative;width:100%;padding-top:56.25%;background:#000;pointer-events:none}
+.f-body video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.f-btn{width:16px;height:16px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);color:#fff;font-size:11px;margin-left:2px;cursor:pointer;pointer-events:auto}
 
-.tut-back{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);padding:20px}
+.tut-back{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
 .tut-back.show{display:flex}
 .tut-card{width:min(96vw,900px);border-radius:14px;overflow:hidden;background:#0a0812;border:1px solid rgba(167,139,250,.25)}
-.tut-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(90deg,rgba(124,58,237,.3),rgba(236,72,153,.2));color:#fff;font-weight:700;letter-spacing:.12em;font-size:13px;text-transform:uppercase}
+.tut-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(124,58,237,.2);color:#fff;font-weight:700;text-transform:uppercase;font-size:13px}
 .tut-body{position:relative;width:100%;padding-top:56.25%;background:#000}
-.tut-body iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tut-body iframe, .tut-body video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+
+.intro-back{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(4,3,10,1)}
+.intro-card{width:min(92vw,640px);border-radius:18px;overflow:hidden;background:#0a0812;border:1px solid rgba(167,139,250,.25);text-align:center}
+.intro-video-wrap{position:relative;padding-top:56.25%}
+.intro-video-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.intro-footer{padding:24px}
+.hop-btn{padding:14px 28px;background:#ef4444;color:#fff;border:2px solid #f59e0b;border-radius:6px;font-weight:800;letter-spacing:.2em}
 .hidden{display:none!important}
 </style>
 
 </head>  
-<body>  <video class="bg-video" autoplay muted loop playsinline preload="auto"  
+<body>  <video class="bg-video" autoplay muted loop playsinline preload="auto"   
 src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>
 
 <div class="bg-overlay"></div>  <div class="container">  
-  <div class="header">  
-    <div>  
-      <h1 class="brand">BIGBEAMERS</h1>  
-      <p class="subtitle">Ultimate Beaming Dashboard</p>  
-      <button class="discord-btn" onclick="openExt('https://discord.gg/')">✦ JOIN DISCORD</button>  
-    </div>  
-    <button class="volume-toggle hidden" id="volBtn" onclick="toggleMute()">  
-      <span id="volIcon">🔊</span>  
-    </button>  
-  </div>    <div class="stats">  
-    <div class="stat"><div class="stat-ico">👥</div><div><div class="stat-val">1K+</div><div class="stat-lab">USERS</div></div></div>  
-    <div class="stat"><div class="stat-ico">🛡️</div><div><div class="stat-val">99.9%</div><div class="stat-lab">SUCCESS</div></div></div>  
-    <div class="stat"><div class="stat-ico">🌐</div><div><div class="stat-val">1M+</div><div class="stat-lab">LINKS</div></div></div>  
-  </div>    <div class="panel">  
-    <div class="section-title">Main Generator</div>  
-    <div class="grid2">  
-      <button class="gen-btn b-immortal" onclick="openExt('https://beaming.cool/?code=MTk5NDMwNjEyNzQzNTgzNTg1Mg==')">↗ IMMORTAL</button>  
-      <button class="gen-btn b-injuries" onclick="openExt('https://www.logged.tg/auth/injaries')">↗ INJURIES</button>  
-      <button class="gen-btn b-shockify" onclick="openExt('https://shockify.st/?code=Mzk0NDM0NzE3ODA4OTU0Mzg3Nw==')">↗ SHOCKIFY</button>  
-      <button class="gen-btn b-gamble" onclick="openExt('https://bloxgame.com/')">↗ GAMBLE YOUR LIFE AWAY</button>  
-    </div>  
-  </div>    <div class="panel">  
-    <div class="section-title">Hyperlink</div>  
-    <p class="section-desc">Open the Hyperlink beta tool in a new tab.</p>  
-    <button class="gen-btn b-hyperlink" onclick="openExt('https://hyperlink-beta.vercel.app/')">⇌ LAUNCH HYPERLINK</button>  
-  </div>    <div class="panel">  
-    <div class="section-title">Refresher</div>  
-    <button class="refresher" onclick="openExt(REFRESHER_URL)">↻ Open Cookie Refresher ↗</button>  
-    <div class="pills"><span class="pill">🔒 Secure</span><span class="pill">⚡ Fast</span></div>  
-  </div>    <div class="panel">  
-    <div class="section-title">Beaming Tutorials</div>  
-    <div class="grid2">  
-      <button class="gen-btn b-tut1" onclick="openTutorial('m6AZ_280WLg','Immortal / Shockify Tutorial')">▷ IMMORTAL / SHOCKIFY TUTORIAL</button>  
-      <button class="gen-btn b-tut2" onclick="openTutorial('X3ZXMED2aFs','Injuries Tutorial')">▷ INJURIES TUTORIAL</button>  
-    </div>  
+  <div class="header">    
+    <div>    
+      <h1 class="brand">BIGBEAMERS</h1>    
+      <p class="subtitle">Ultimate Beaming Dashboard</p>    
+      <button class="discord-btn" onclick="openExt('https://discord.gg/')">✦ JOIN DISCORD</button>    
+    </div>    
+    <button class="volume-toggle hidden" id="volBtn" onclick="toggleMute()">    
+      <span id="volIcon">🔊</span>    
+    </button>    
+  </div>    <div class="stats">    
+    <div class="stat"><div class="stat-ico">👥</div><div><div class="stat-val">1K+</div><div class="stat-lab">USERS</div></div></div>    
+    <div class="stat"><div class="stat-ico">🛡️</div><div><div class="stat-val">99.9%</div><div class="stat-lab">SUCCESS</div></div></div>    
+    <div class="stat"><div class="stat-ico">🌐</div><div><div class="stat-val">1M+</div><div class="stat-lab">LINKS</div></div></div>    
+  </div>    <div class="panel">    
+    <div class="section-title">Main Generator</div>    
+    <div class="grid2">    
+      <button class="gen-btn b-splunk" style="grid-column: span 2;" onclick="openExt('https://app.beamers.si/u/BIGBEAMERS')">👑 SPLUNK</button>    
+    </div>    
+  </div>    <div class="panel">    
+    <div class="section-title">2nd Generator (2nd Priority)</div>    
+    <div class="grid2">    
+      <button class="gen-btn b-immortal" onclick="openExt('https://beaming.cool/?code=MTk5NDMwNjEyNzQzNTgzNTg1Mg==')">↗ IMMORTAL</button>    
+      <button class="gen-btn b-injuries" onclick="openExt('https://www.logged.tg/auth/injaries')">↗ INJURIES</button>    
+      <button class="gen-btn b-shockify" onclick="openExt('https://shockify.st/?code=Mzk0NDM0NzE3ODA4OTU0Mzg3Nw==')">↗ SHOCKIFY</button>    
+      <button class="gen-btn b-gamble" onclick="openExt('https://bloxgame.com/')">↗ GAMBLE YOUR LIFE AWAY</button>    
+    </div>    
+  </div>    <div class="panel">    
+    <div class="section-title">Hyperlink</div>    
+    <p class="section-desc">Open the Hyperlink beta tool in a new tab.</p>    
+    <button class="gen-btn b-hyperlink" onclick="openExt('https://hyperlink-beta.vercel.app/')">⇌ LAUNCH HYPERLINK</button>    
+  </div>    <div class="panel">    
+    <div class="section-title">Refresher</div>    
+    <button class="refresher" onclick="openExt(REFRESHER_URL)">↻ Open Cookie Refresher ↗</button>    
+    <div class="pills"><span class="pill">🔒 Secure</span><span class="pill">⚡ Fast</span></div>    
+  </div>    <div class="panel">    
+    <div class="section-title">Beaming Tutorials</div>    
+    <div class="grid2">    
+      <button class="gen-btn b-tut1" onclick="openTutorial('m6AZ_280WLg','Immortal / Shockify Tutorial')">▷ IMMORTAL / SHOCKIFY TUTORIAL</button>    
+      <button class="gen-btn b-tut2" onclick="openTutorial('X3ZXMED2aFs','Injuries Tutorial')">▷ INJURIES TUTORIAL</button>    
+    </div>    
+  </div>    <div class="grid3">    
+    <div class="feature"><h4>Secure</h4><p>Military-grade encryption</p></div>    
+    <div class="feature"><h4>Fast</h4><p>Lightning speed performance</p></div>    
+    <div class="feature"><h4>Trusted</h4><p>1K+ satisfied users</p></div>    
   </div>  
-  <div class="section-title">Why Choose BIGBEAMERS?</div>  
-  <div class="grid3">  
-    <div class="feature"><div class="feature-ico">🔒</div><h4>Secure</h4><p>Military-grade encryption</p></div>  
-    <div class="feature"><div class="feature-ico">⚡</div><h4>Fast</h4><p>Lightning speed performance</p></div>  
-    <div class="feature"><div class="feature-ico">🤝</div><h4>Trusted</h4><p>1K+ satisfied users</p></div>  
-  </div>    <div class="footer">&copy; 2026 BIGBEAMERS — Ultimate Beaming Dashboard</div>  
 </div>  <div class="floating" id="floating">  
   <div class="f-header" id="fHeader">  
     <div>⋮⋮ BIGBEAMERS</div>  
     <div>  
-      <button class="f-btn" onclick="toggleMin(event)">–</button>  
+      <button class="f-btn" onclick="expandVideo(event)">⛶</button>  
       <button class="f-btn close" onclick="closeFloat(event)">×</button>  
     </div>  
   </div>  
-  <div class="f-body" id="fBody">  
-    <video id="floatVideo" autoplay loop playsinline preload="auto"  
-      src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>  
+  <div class="f-body">  
+    <video id="floatVideo" loop playsinline preload="auto"   
+    src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>  
   </div>  
 </div>  <div class="intro-back" id="intro">  
   <div class="intro-card">  
     <div class="intro-video-wrap">  
-      <video autoplay muted loop playsinline preload="auto"  
-        src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>  
+      <video autoplay muted loop playsinline src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>  
     </div>  
     <div class="intro-footer">  
-      <h2 class="intro-title">BIGBEAMERS!!</h2>  
-      <p class="intro-sub">Prepare to set sail on the ultimate anime journey!</p>  
+      <h2 class="brand">BIGBEAMERS!!</h2>  
+      <p style="margin-bottom: 20px;">Prepare to set sail on the ultimate journey!</p>  
       <button class="hop-btn" onclick="enterDashboard()">▶ LET'S HOP IN</button>  
-      <p class="intro-hint">🔊 CLICK TO START AUDIO &amp; ENTER DASHBOARD</p>  
     </div>  
   </div>  
-</div>  <div class="tut-back" id="tut" onclick="closeTutorial(event)">  
+</div>  <div class="tut-back" id="tutModal" onclick="closeModal(event)">  
   <div class="tut-card" onclick="event.stopPropagation()">  
     <div class="tut-header">  
-      <span id="tutTitle">Tutorial</span>  
-      <button class="f-btn close" onclick="closeTutorial(event,true)">×</button>  
+      <span id="tutTitle">TUTORIAL</span>  
+      <button class="f-btn" onclick="closeModal(null,true)">×</button>  
     </div>  
-    <div class="tut-body"><iframe id="tutFrame" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>  
+    <div class="tut-body" id="modalContent"></div>  
   </div>  
 </div>  <script>  
-const REFRESHER_URL = "https://www.logged.tg/tools/refresher?defaultFill=_%7CSHARE-THIS-TO-EVERYONE%7C_CAEaAhADIhwKBGR1aWQSFDEzNzQ4NjE4MjA4MzMxODU3Mzk5KAQ.allNAtrhQoM4-tWQHEvBKYgPu2vqMp36wH3nfcI75rSZ1Kt2Xmkt81hGcgeTJ8O8q2vJETGj1GP4ZPxfTB3D-mKrK-YGBXkv_DdqWzLV0dMqZyjhQ0DKTnoS0ASTXjVzrEUlrusAavfxGCrEHret_YzopQB9Eg41pq1d1Kn5mBeuvxkMaX0uWDEopJ1vzVsvZW84k84F_FigncdW1d0DY2LDfATTfowTmmL5NQa0iDY5Z2VppkjUJWMJCPVwzyms9yn-ls48fXByM-uzQg76DZFhDCiyITCdGVR0FABKln-WPgbP6ljhFtEnRL8cECISkOg24niIw7qIaoFOOcaud528gW23wQooJxGHLAHwdC5XNY4di5ujvv-zwWazRSmz9L_b4lVGf5weh1qKLRx1ArTjJ8gQtXjB8LHWAvIlgG9lt20okTJRDgUJaDUg9bU6N-6YXQ7yMrwyB1JCTp5HUDwD92WVlWz8OjfNj3RNbybln3iBf4EC9ehOc39XumwrsiNTOA7moGQ6A6L_ToL8msHyxL8OwBJiGnJWm3X533WDlZAaNU7PUTXXBhbY3Tb5agFGdNESF07CQwg5Obghy2bphnVcc1FqhlkQJAIH17ZSOShPUjKu2s870thxT-tIzZG70Q";  
-  
+const REFRESHER_URL = "https://www.logged.tg/tools/refresher?defaultFill=URL_STUFF_HERE";  
 const openExt = (url) => window.open(url, '_blank', 'noopener,noreferrer');  
 let muted = false;  
   
@@ -181,71 +181,116 @@ function enterDashboard(){
   document.getElementById('intro').style.display='none';  
   const fv=document.getElementById('floatVideo');  
   fv.muted=false;  
-  const p=fv.play(); if(p&&p.catch)p.catch(()=>{});  
+  fv.play().catch(()=>{});  
   document.getElementById('floating').classList.add('show');  
   document.getElementById('volBtn').classList.remove('hidden');  
   initDrag();  
 }  
+  
 function toggleMute(){  
   muted=!muted;  
   document.getElementById('floatVideo').muted=muted;  
+  const expVid = document.getElementById('expandedVideo');  
+  if(expVid) expVid.muted = muted;  
   document.getElementById('volIcon').textContent=muted?'🔇':'🔊';  
 }  
-function toggleMin(e){  
-  e.stopPropagation();  
-  const body=document.getElementById('fBody');  
-  const f=document.getElementById('floating');  
-  if(body.style.display==='none'){body.style.display='';f.style.width='150px';}  
-  else{body.style.display='none';f.style.width='110px';}  
+  
+function expandVideo(e) {  
+  if(e) e.stopPropagation();  
+  const floatVid = document.getElementById('floatVideo');  
+  const container = document.getElementById('modalContent');  
+  const time = floatVid.currentTime;  
+  
+  floatVid.pause();  
+  container.innerHTML = `<video id="expandedVideo" autoplay loop playsinline src="${floatVid.src}"></video>`;  
+    
+  const expVid = document.getElementById('expandedVideo');  
+  expVid.currentTime = time;  
+  expVid.muted = muted;  
+  
+  document.getElementById('tutTitle').textContent = "EXPANDED VIEW";  
+  document.getElementById('tutModal').classList.add('show');  
+    
+  requestAnimationFrame(() => { expVid.play().catch(()=>{}); });  
 }  
+  
+function openTutorial(id, title){  
+  document.getElementById('floatVideo').pause();  
+  document.getElementById('tutTitle').textContent = title;  
+  const container = document.getElementById('modalContent');  
+  container.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;  
+  document.getElementById('tutModal').classList.add('show');  
+}  
+  
+function closeModal(e, force){  
+  if(!force && e && e.target.id !== 'tutModal') return;  
+  const expVid = document.getElementById('expandedVideo');  
+  const floatVid = document.getElementById('floatVideo');  
+    
+  if(expVid) {  
+    floatVid.currentTime = expVid.currentTime;  
+  }  
+    
+  document.getElementById('tutModal').classList.remove('show');  
+  document.getElementById('modalContent').innerHTML = '';  
+    
+  if(document.getElementById('floating').classList.contains('show')) {  
+    floatVid.play().catch(()=>{});  
+  }  
+}  
+  
 function closeFloat(e){  
   e.stopPropagation();  
   document.getElementById('floatVideo').pause();  
   document.getElementById('floating').classList.remove('show');  
 }  
-function openTutorial(id,title){  
-  document.getElementById('floatVideo').muted=true;  
-  document.getElementById('tutTitle').textContent=title;  
-  document.getElementById('tutFrame').src=`https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;  
-  document.getElementById('tut').classList.add('show');  
-}  
-function closeTutorial(e,force){  
-  if(!force&&e&&e.target.id!=='tut')return;  
-  document.getElementById('tut').classList.remove('show');  
-  document.getElementById('tutFrame').src='';  
-  document.getElementById('floatVideo').muted=muted;  
-}  
+  
+/* IMPROVED DRAG LOGIC - 1:1 Movement, No Lag */  
 function initDrag(){  
-  const el=document.getElementById('floating');  
-  const hdr=document.getElementById('fHeader');  
-  let pos={x:16,y:16};  
-  let drag={active:false,sx:0,sy:0,bx:0,by:0,raf:0};  
-  const apply=()=>{el.style.transform=`translate3d(${pos.x}px,${pos.y}px,0)`};  
-  apply();  
-  const move=(ev)=>{  
-    if(!drag.active)return;  
-    const dx=ev.clientX-drag.sx, dy=ev.clientY-drag.sy;  
-    const maxX=window.innerWidth-el.offsetWidth-4;  
-    const maxY=window.innerHeight-el.offsetHeight-4;  
-    pos.x=Math.max(4,Math.min(maxX,drag.bx+dx));  
-    pos.y=Math.max(4,Math.min(maxY,drag.by+dy));  
-    if(drag.raf)return;  
-    drag.raf=requestAnimationFrame(()=>{apply();drag.raf=0;});  
-  };  
-  const up=()=>{  
-    drag.active=false;  
-    window.removeEventListener('pointermove',move);  
-    if(drag.raf){cancelAnimationFrame(drag.raf);drag.raf=0;}  
-  };  
-  hdr.addEventListener('pointerdown',(ev)=>{  
-    if(ev.target.closest('.f-btn'))return;  
-    ev.preventDefault();  
-    drag.active=true;  
-    drag.sx=ev.clientX;drag.sy=ev.clientY;  
-    drag.bx=pos.x;drag.by=pos.y;  
-    window.addEventListener('pointermove',move);  
-    window.addEventListener('pointerup',up,{once:true});  
-  });  
+  const el = document.getElementById('floating');  
+  const hdr = document.getElementById('fHeader');  
+    
+  let currentX = 16;  
+  let currentY = 16;  
+  let initialX, initialY;  
+  let xOffset = 16;  
+  let yOffset = 16;  
+  let active = false;  
+  
+  hdr.addEventListener('pointerdown', dragStart);  
+  
+  function dragStart(e) {  
+    initialX = e.clientX - xOffset;  
+    initialY = e.clientY - yOffset;  
+  
+    if (e.target === hdr || hdr.contains(e.target)) {  
+      active = true;  
+      hdr.setPointerCapture(e.pointerId);  
+      window.addEventListener('pointermove', drag);  
+      window.addEventListener('pointerup', dragEnd);  
+    }  
+  }  
+  
+  function dragEnd() {  
+    initialX = currentX;  
+    initialY = currentY;  
+    active = false;  
+    window.removeEventListener('pointermove', drag);  
+  }  
+  
+  function drag(e) {  
+    if (active) {  
+      e.preventDefault();  
+      currentX = e.clientX - initialX;  
+      currentY = e.clientY - initialY;  
+      xOffset = currentX;  
+      yOffset = currentY;  
+  
+      requestAnimationFrame(() => {  
+        el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;  
+      });  
+    }  
+  }  
 }  
 </script>  </body>  
-  </html>
+</html>  
