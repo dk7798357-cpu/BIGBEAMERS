@@ -221,7 +221,7 @@ src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/
     <div class="feature"><div class="feature-ico">⚡</div><h4>Fast</h4><p>Lightning speed performance</p></div>
     <div class="feature"><div class="feature-ico">⭐</div><h4>Trusted</h4><p>1K+ satisfied users</p></div>
   </div>
-
+  
   <div class="foot">Powered by <span>BIGBEAMERS</span> · 2026</div>
 </div>
 <div class="floating" id="floating">
@@ -323,4 +323,56 @@ function closeModal(e, force){
   document.getElementById('modalContent').innerHTML = '';
 
   if(document.getElementById('floating').classList.contains('show')) {
-    floatVid.play().
+    floatVid.play().catch(()=>{});
+  }
+}
+
+function closeFloat(e){
+  e.stopPropagation();
+  document.getElementById('floatVideo').pause();
+  document.getElementById('floating').classList.remove('show');
+}
+
+/* DRAG LOGIC - 1:1 Movement, No Lag */
+function initDrag(){
+  const el = document.getElementById('floating');
+  const hdr = document.getElementById('fHeader');
+
+  let currentX = 0, currentY = 0;
+  let initialX, initialY;
+  let xOffset = 0, yOffset = 0;
+  let active = false;
+
+  hdr.addEventListener('pointerdown', dragStart);
+
+  function dragStart(e) {
+    if (e.target.closest('.f-btn')) return;
+    initialX = e.clientX - xOffset;
+    initialY = e.clientY - yOffset;
+    active = true;
+    hdr.setPointerCapture(e.pointerId);
+    window.addEventListener('pointermove', drag);
+    window.addEventListener('pointerup', dragEnd);
+  }
+
+  function dragEnd() {
+    active = false;
+    window.removeEventListener('pointermove', drag);
+    window.removeEventListener('pointerup', dragEnd);
+  }
+
+  function drag(e) {
+    if (!active) return;
+    e.preventDefault();
+    currentX = e.clientX - initialX;
+    currentY = e.clientY - initialY;
+    xOffset = currentX;
+    yOffset = currentY;
+    requestAnimationFrame(() => {
+      el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    });
+  }
+}
+</script>
+</body>
+</html>
