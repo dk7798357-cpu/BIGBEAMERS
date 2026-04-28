@@ -1,20 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Your Title Here</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BIGBEAMERS — Ultimate Beaming Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#07060b;color:#e9e7ff;font-family:'Inter',sans-serif;min-height:100%;overflow-x:hidden}
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+  a{color:inherit;text-decoration:none}
+
+  /* GPU Acceleration to stop the lag */
+  .bg-video, .floating, .tut-card { transform: translateZ(0); }
+
+  .bg-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;filter:brightness(.4) saturate(1.15)}
+  .bg-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;background:
+    radial-gradient(60% 50% at 50% 30%,rgba(120,70,200,.22),transparent 60%),
+    radial-gradient(40% 35% at 80% 80%,rgba(60,220,220,.10),transparent 60%),
+    linear-gradient(180deg,rgba(6,4,12,.55),rgba(5,3,12,.78) 45%,rgba(5,3,12,.92))
+  }
+
+  .container{position:relative;z-index:10;max-width:1100px;margin:0 auto;padding:32px 20px 80px}
+  @media(min-width:768px){
+    .container{padding:56px 32px 100px}
+  }
+
+  .header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:36px}
+  .brand{
+    font-family:'Bungee',sans-serif;
+    font-size:48px;line-height:.95;letter-spacing:.02em;
+    background:linear-gradient(180deg,#e7dcff 0%,#a78bfa 45%,#7c5cff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 30px rgba(140,100,255,.25);
+    word-break:break-word;
+  }
+  @media(min-width:768px){ .brand{font-size:84px} }
+  .subtitle{color:#b9b6d6;font-size:14px;margin-top:6px;letter-spacing:.04em}
+
+  .discord-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;margin-top:18px;border-radius:10px;background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;font-weight:700;letter-spacing:.14em;font-size:12px;text-transform:uppercase;box-shadow:0 8px 22px rgba(124,58,237,.4);transition:transform .15s ease,filter .15s ease,box-shadow .15s ease}
+  .discord-btn:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 12px 28px rgba(124,58,237,.55)}
+
+  .volume-toggle{width:44px;height:44px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.3);color:#5eead4;transition:background .15s ease,transform .15s ease}
+  .volume-toggle:hover{background:rgba(45,212,191,.18);transform:translateY(-1px)}
+
+  .stats{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:24px}
+  @media(min-width:640px){ .stats{grid-template-columns:repeat(3,1fr)} }
+  .stat{display:flex;align-items:center;gap:14px;padding:18px 18px;border-radius:14px;background:linear-gradient(180deg,rgba(20,18,32,.85),rgba(12,10,22,.85));border:1px solid rgba(94,234,212,.14);transition:transform .2s ease,border-color .2s ease}
+  .stat:hover{transform:translateY(-2px);border-color:rgba(94,234,212,.35)}
+  .stat-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.28);color:#5eead4;font-size:20px;flex-shrink:0}
+  .stat-val{font-size:26px;font-weight:800;color:#fff;line-height:1}
+  .stat-lab{font-size:11px;letter-spacing:.22em;color:#a6a3c7;margin-top:4px;font-weight:600}
+
+  .panel{background:linear-gradient(180deg,rgba(22,20,36,.82),rgba(14,12,24,.82));border:1px solid rgba(120,120,180,.16);border-radius:16px;backdrop-filter:blur(8px);box-shadow:0 14px 40px rgba(0,0,0,.5);padding:22px;margin-bottom:18px}
+  .section-title{letter-spacing:.18em;font-weight:800;font-size:12px;color:#d2cfee;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .section-title::before{content:"";width:6px;height:14px;border-radius:2px;background:linear-gradient(180deg,#a78bfa,#7c3aed);box-shadow:0 0 12px rgba(124,58,237,.6)}
+  .section-desc{font-size:13.5px;color:#9a97bd;margin:-6px 0 14px;line-height:1.5}
+
+  .grid2{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:640px){ .grid2{grid-template-columns:repeat(2,1fr)} }
+
+  .gen-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;height:58px;width:100%;border-radius:12px;font-weight:800;letter-spacing:.1em;color:#fff;font-size:14px;text-transform:uppercase;transition:transform .2s ease,filter .2s ease,box-shadow .2s ease;background-size:cover;background-position:center;background-repeat:no-repeat;text-shadow:0 2px 8px rgba(0,0,0,.9);overflow:hidden;isolation:isolate}
+  .gen-btn:hover{transform:translateY(-3px);filter:brightness(1.1) saturate(1.08)}
+  .gen-btn:active{transform:translateY(-1px)}
+
+  /* MAIN GENERATOR — SPLUNK (4th picture: blue droplet) */
+  .b-splunk{
+    background-image:linear-gradient(90deg,rgba(250,204,21,.45),rgba(234,179,8,.45)),url('https://customer-assets.emergentagent.com/job_b62a9383-4270-4902-b72e-1808249e2424/artifacts/meain3v5_IMG_20260423_214002.jpg');
+    box-shadow:0 10px 28px rgba(234,179,8,.35), inset 0 0 0 1px rgba(255,255,255,.08);
+    height:68px;font-size:16px;letter-spacing:.16em
+  }
+
+  /* IMMORTAL (2nd picture: IS letters) */
+  .b-immortal{
+    background-image:linear-gradient(90deg,rgba(6,182,212,.55),rgba(37,99,235,.55)),url('https://customer-assets.emergentagent.com/job_b62a9383-4270-4902-b72e-1808249e2424/artifacts/pox57do6_IMG_20260423_213621.jpg');
+    box-shadow:0 8px 24px rgba(37,99,235,.4), inset 0 0 0 1px rgba(255,255,255,.06)
+  }
+
+  /* INJURIES (3rd picture: clover) */
+  .b-injuries{
+    background-image:linear-gradient(90deg,rgba(239,68,68,.55),rgba(249,115,22,.55)),url('https://customer-assets.emergentagent.com/job_b62a9383-4270-4902-b72e-1808249e2424/artifacts/2yx30ylw_four-leaf-clover-icon-clover-silhouette-simple-icon-illustration-vector%20%282%29.jpg');
+    box-shadow:0 8px 24px rgba(239,68,68,.4), inset 0 0 0 1px rgba(255,255,255,.06)
+  }
+
+  /* SHOCKIFY (1st picture: yellow lightning bolt) */
+  .b-shockify{
+    background-image:linear-gradient(90deg,rgba(245,158,11,.55),rgba(234,179,8,.55)),url('https://customer-assets.emergentagent.com/job_b62a9383-4270-4902-b72e-1808249e2424/artifacts/tfbdatg9_IMG_20260423_213647.jpg');
+    box-shadow:0 8px 24px rgba(245,158,11,.4), inset 0 0 0 1px rgba(255,255,255,.06)
+  }
+
+  /* GAMBLE YOUR LIFE AWAY (5th picture: gambler) */
+  .b-gamble{
+    background-image:linear-gradient(90deg,rgba(16,185,129,.5),rgba(34,197,94,.5)),url('https://customer-assets.emergentagent.com/job_b62a9383-4270-4902-b72e-1808249e2424/artifacts/s5dlt11e_images%20%285%29.jpeg');
+    box-shadow:0 8px 24px rgba(16,185,129,.4), inset 0 0 0 1px rgba(255,255,255,.06);
+    height:64px
+  }
+
+  .b-hyperlink{background:linear-gradient(90deg,#a855f7,#ec4899);box-shadow:0 8px 28px rgba(168,85,247,.45)}
+  .b-tut1{background:linear-gradient(90deg,#3b82f6,#60a5fa);box-shadow:0 8px 24px rgba(59,130,246,.4)}
+  .b-tut2{background:linear-gradient(90deg,#10b981,#34d399);box-shadow:0 8px 24px rgba(16,185,129,.4)}
+  .b-tut3{background:linear-gradient(90deg,#facc15,#eab308);color:#1a1208!important;text-shadow:none;box-shadow:0 8px 24px rgba(234,179,8,.45)}
+
+  .refresher{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:12px;background:linear-gradient(90deg,rgba(236,72,153,.18),rgba(168,85,247,.12));border:1px solid rgba(236,72,153,.4);color:#fff;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:13px;transition:transform .2s ease,background .2s ease}
+  .refresher:hover{transform:translateY(-2px);background:linear-gradient(90deg,rgba(236,72,153,.28),rgba(168,85,247,.2))}
+  .pills{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid rgba(94,234,212,.32);color:#5eead4;font-size:11px;font-weight:700;background:rgba(45,212,191,.08);letter-spacing:.08em}
+
+  .grid3{display:grid;grid-template-columns:1fr;gap:14px;margin-top:8px}
+  @media(min-width:640px){ .grid3{grid-template-columns:repeat(3,1fr)} }
+  .feature{padding:24px 18px;border-radius:14px;background:linear-gradient(180deg,rgba(18,16,30,.75),rgba(12,10,22,.75));border:1px solid rgba(94,234,212,.16);text-align:center;transition:transform .2s ease,border-color .2s ease}
+  .feature:hover{transform:translateY(-3px);border-color:rgba(94,234,212,.4)}
+  .feature-ico{width:48px;height:48px;margin:0 auto 12px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(94,234,212,.1);border:1px solid rgba(94,234,212,.28);color:#5eead4}
+  .feature h4{color:#fff;font-size:17px;font-weight:800;letter-spacing:.04em}
+  .feature p{color:#9a97bd;font-size:13px;margin-top:6px;line-height:1.5}
+
+  /* Floating PiP */
+  .floating{position:fixed;top:16px;left:16px;width:200px;z-index:60;border-radius:12px;overflow:hidden;background:#000;border:1px solid rgba(167,139,250,.4);display:none;will-change:transform;touch-action:none;box-shadow:0 12px 32px rgba(0,0,0,.6)}
+  .floating.show{display:block}
+  .f-header{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:linear-gradient(90deg,rgba(124,58,237,.5),rgba(236,72,153,.35));cursor:grab;font-weight:800;color:#fff;text-transform:uppercase;font-size:10px;letter-spacing:.1em;user-select:none}
+  .f-header:active{cursor:grabbing}
+  .f-body{position:relative;width:100%;padding-top:56.25%;background:#000;pointer-events:none}
+  .f-body video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .f-btn{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);color:#fff;font-size:12px;margin-left:3px;cursor:pointer;pointer-events:auto;transition:background .15s}
+  .f-btn:hover{background:rgba(0,0,0,.7)}
+
+  /* Modal */
+  .tut-back{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);padding:20px}
+  .tut-back.show{display:flex}
+  .tut-card{width:min(96vw,960px);border-radius:16px;overflow:hidden;background:#0a0812;border:1px solid rgba(167,139,250,.3);box-shadow:0 24px 64px rgba(0,0,0,.7)}
+  .tut-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(90deg,rgba(124,58,237,.3),rgba(236,72,153,.2));color:#fff;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.12em}
+  .tut-body{position:relative;width:100%;padding-top:56.25%;background:#000}
+  .tut-body iframe, .tut-body video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+
+  /* Intro */
+  .intro-back{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(4,3,10,.96);padding:20px;backdrop-filter:blur(4px)}
+  .intro-card{width:min(92vw,580px);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#120e22,#0a0812);border:1px solid rgba(167,139,250,.3);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 60px rgba(124,58,237,.15)}
+  .intro-video-wrap{position:relative;padding-top:56.25%;background:#000}
+  .intro-video-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .intro-footer{padding:24px 24px 28px}
+  .intro-footer .brand{font-size:48px;display:inline-block}
+  .intro-tag{margin:8px 0 22px;color:#b9b6d6;font-size:14px;letter-spacing:.05em}
+  .hop-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:linear-gradient(90deg,#ef4444,#f97316);color:#fff;border-radius:10px;font-weight:900;letter-spacing:.22em;font-size:14px;text-transform:uppercase;box-shadow:0 12px 28px rgba(239,68,68,.45);transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+  .hop-btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 16px 36px rgba(239,68,68,.6)}
+
+  .hidden{display:none!important}
+/* Footer credit */
+  .foot{margin-top:32px;text-align:center;color:#6c6996;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+  .foot span{color:#a78bfa;font-weight:700}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to BIGBEAMERS</h1>
-    </header>
-    <main>
-        <section>
-            <button onclick="window.location.href='https://discord.gg/mMAkER6eK'">Join our Discord</button>
-        </section>
-    </main>
-    <script src="script.js"></script>
+
+<video class="bg-video" autoplay muted loop playsinline preload="auto"
+src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>
+<div class="bg-overlay"></div>
+
+<div class="container">
+  <div class="header">
+    <div>
+      <h1 class="brand">BIGBEAMERS</h1>
+      <p class="subtitle">Ultimate Beaming Dashboard</p>
+      <button class="discord-btn" onclick="openExt('https://discord.gg/')">✦ JOIN DISCORD</button>
+    </div>
+    <button class="volume-toggle hidden" id="volBtn" onclick="toggleMute()" title="Toggle sound">
+      <span id="volIcon">🔊</span>
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-ico">👥</div><div><div class="stat-val">1K+</div><div class="stat-lab">USERS</div></div></div>
+    <div class="stat"><div class="stat-ico">🛡️</div><div><div class="stat-val">99.9%</div><div class="stat-lab">SUCCESS</div></div></div>
+    <div class="stat"><div class="stat-ico">🌐</div><div><div class="stat-val">1M+</div><div class="stat-lab">LINKS</div></div></div>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">Main Generator</div>
+    <button class="gen-btn b-splunk" onclick="openExt('https://app.beamers.si/u/BIGBEAMERS')">👑 SPLUNK</button>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">2nd Generator (2nd Priority)</div>
+    <div class="grid2">
+      <button class="gen-btn b-immortal" onclick="openExt('https://beaming.cool/?code=MTk5NDMwNjEyNzQzNTgzNTg1Mg==')">↗ IMMORTAL</button>
+      <button class="gen-btn b-injuries" onclick="openExt('https://www.logged.tg/auth/injaries')">↗ INJURIES</button>
+      <button class="gen-btn b-shockify" onclick="openExt('https://shockify.st/?code=Mzk0NDM0NzE3ODA4OTU0Mzg3Nw==')" style="grid-column:1/-1">↗ SHOCKIFY</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">Gamble Your Life Away</div>
+    <p class="section-desc">Feeling lucky? Try your hand at the tables.</p>
+    <button class="gen-btn b-gamble" onclick="openExt('https://bloxgame.com/')">↗ GAMBLE YOUR LIFE AWAY</button>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">Hyperlink</div>
+    <p class="section-desc">Open the Hyperlink beta tool in a new tab.</p>
+    <button class="gen-btn b-hyperlink" onclick="openExt('https://hyperlink-beta.vercel.app/')">⇌ LAUNCH HYPERLINK</button>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">Refresher</div>
+    <button class="refresher" onclick="openExt(REFRESHER_URL)">↻ Open Cookie Refresher ↗</button>
+    <div class="pills"><span class="pill">🔒 Secure</span><span class="pill">⚡ Fast</span></div>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">Beaming Tutorials</div>
+    <div class="grid2">
+      <button class="gen-btn b-tut1" onclick="openTutorial('_HwtqtnCcbA','Immortal / Shockify Tutorial')">▷ IMMORTAL / SHOCKIFY TUTORIAL</button>
+      <button class="gen-btn b-tut2" onclick="openTutorial('0gjVHoHT4SA','Injuries Tutorial')">▷ INJURIES TUTORIAL</button>
+      <button class="gen-btn b-tut3" onclick="openTutorial('K9wI5NS3Z0Y','Splunk Tutorial')" style="grid-column:1/-1">▷ SPLUNK TUTORIAL</button>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="feature"><div class="feature-ico">🛡️</div><h4>Secure</h4><p>Military-grade encryption</p></div>
+    <div class="feature"><div class="feature-ico">⚡</div><h4>Fast</h4><p>Lightning speed performance</p></div>
+    <div class="feature"><div class="feature-ico">⭐</div><h4>Trusted</h4><p>1K+ satisfied users</p></div>
+  </div>
+
+  <div class="foot">Powered by <span>BIGBEAMERS</span> · 2026</div>
+</div>
+<div class="floating" id="floating">
+  <div class="f-header" id="fHeader">
+    <div>⋮⋮ BIGBEAMERS</div>
+    <div>
+      <button class="f-btn" onclick="expandVideo(event)" title="Expand">⛶</button>
+      <button class="f-btn" onclick="closeFloat(event)" title="Close">×</button>
+    </div>
+  </div>
+  <div class="f-body">
+    <video id="floatVideo" loop playsinline preload="auto"
+    src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>
+  </div>
+</div>
+
+<div class="intro-back" id="intro">
+  <div class="intro-card">
+    <div class="intro-video-wrap">
+      <video autoplay muted loop playsinline src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/pry7pq65_video_20260420_143536_edit.mp4"></video>
+    </div>
+    <div class="intro-footer">
+      <h2 class="brand">BIGBEAMERS!!</h2>
+      <p class="intro-tag">Prepare to set sail on the ultimate journey!</p>
+      <button class="hop-btn" onclick="enterDashboard()">▶ LET'S HOP IN</button>
+    </div>
+  </div>
+</div>
+
+    
+<div class="tut-back" id="tutModal" onclick="closeModal(event)">
+  <div class="tut-card" onclick="event.stopPropagation()">
+    <div class="tut-header">
+      <span id="tutTitle">TUTORIAL</span>
+      <button class="f-btn" onclick="closeModal(null,true)" title="Close">×</button>
+    </div>
+    <div class="tut-body" id="modalContent"></div>
+  </div>
+</div>
+
+ 
+<script>
+const REFRESHER_URL = "https://www.logged.tg/tools/refresher?defaultFill=URL_STUFF_HERE";
+const openExt = (url) => window.open(url, '_blank', 'noopener,noreferrer');
+let muted = false;
+
+function enterDashboard(){
+  document.getElementById('intro').style.display='none';
+  const fv=document.getElementById('floatVideo');
+  fv.muted=false;
+  fv.play().catch(()=>{});
+  document.getElementById('floating').classList.add('show');
+  document.getElementById('volBtn').classList.remove('hidden');
+  initDrag();
+}
+
+function toggleMute(){
+  muted=!muted;
+  document.getElementById('floatVideo').muted=muted;
+  const expVid = document.getElementById('expandedVideo');
+  if(expVid) expVid.muted = muted;
+  document.getElementById('volIcon').textContent=muted?'🔇':'🔊';
+}
+
+function expandVideo(e) {
+  if(e) e.stopPropagation();
+  const floatVid = document.getElementById('floatVideo');
+  const container = document.getElementById('modalContent');
+  const time = floatVid.currentTime;
+
+  floatVid.pause();
+  container.innerHTML = `<video id="expandedVideo" autoplay loop playsinline src="${floatVid.src}"></video>`;
+
+  const expVid = document.getElementById('expandedVideo');
+  expVid.currentTime = time;
+  expVid.muted = muted;
+
+  document.getElementById('tutTitle').textContent = "EXPANDED VIEW";
+  document.getElementById('tutModal').classList.add('show');
+
+  requestAnimationFrame(() => { expVid.play().catch(()=>{}); });
+}
+function openTutorial(id, title){
+  document.getElementById('floatVideo').pause();
+  document.getElementById('tutTitle').textContent = title;
+  const container = document.getElementById('modalContent');
+  container.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  document.getElementById('tutModal').classList.add('show');
+}
+function closeFloat(e){
+  e.stopPropagation();
+  document.getElementById('floatVideo').pause();
+  document.getElementById('floating').classList.remove('show');
+}
+
+/* DRAG LOGIC - 1:1 Movement, No Lag */
+function initDrag(){
+  const el = document.getElementById('floating');
+  const hdr = document.getElementById('fHeader');
+
+  let currentX = 0, currentY = 0;
+  let initialX, initialY;
+  let xOffset = 0, yOffset = 0;
+  let active = false;
+
+  hdr.addEventListener('pointerdown', dragStart);
+
+  function dragStart(e) {
+    if (e.target.closest('.f-btn')) return;
+    initialX = e.clientX - xOffset;
+    initialY = e.clientY - yOffset;
+    active = true;
+    hdr.setPointerCapture(e.pointerId);
+    window.addEventListener('pointermove', drag);
+    window.addEventListener('pointerup', dragEnd);
+  }
+
+  function dragEnd() {
+    active = false;
+    window.removeEventListener('pointermove', drag);
+    window.removeEventListener('pointerup', dragEnd);
+  }
+
+  function drag(e) {
+    if (!active) return;
+    e.preventDefault();
+    currentX = e.clientX - initialX;
+    currentY = e.clientY - initialY;
+    xOffset = currentX;
+    yOffset = currentY;
+    requestAnimationFrame(() => {
+      el.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+    });
+  }
+}
+</script>
 </body>
 </html>
