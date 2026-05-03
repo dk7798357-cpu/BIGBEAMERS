@@ -74,6 +74,36 @@
   .gen-btn:hover{transform:translateY(-3px);filter:brightness(1.1) saturate(1.08)}
   .gen-btn:active{transform:translateY(-1px)}
 
+   /* Online/Offline status badge on generator buttons */
+  .status-badge{
+    position:absolute;top:8px;right:10px;
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 9px;border-radius:999px;
+    font-size:10px;font-weight:800;letter-spacing:.14em;
+    background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+    border:1px solid rgba(255,255,255,.12);
+    text-shadow:none;z-index:2;
+  }
+  .status-dot{
+    width:8px;height:8px;border-radius:50%;
+    display:inline-block;
+  }
+  .status-online .status-dot{
+    background:#22c55e;
+    box-shadow:0 0 8px #22c55e,0 0 14px rgba(34,197,94,.6);
+    animation:pulseDot 1.6s ease-in-out infinite;
+  }
+  .status-online{color:#86efac;border-color:rgba(34,197,94,.45)}
+  .status-offline .status-dot{
+    background:#ef4444;
+    box-shadow:0 0 8px #ef4444,0 0 14px rgba(239,68,68,.5);
+  }
+  .status-offline{color:#fca5a5;border-color:rgba(239,68,68,.45)}
+  @keyframes pulseDot{
+    0%,100%{transform:scale(1);opacity:1}
+    50%{transform:scale(1.3);opacity:.7}
+  }
+
   .b-splunk{
     background-image:linear-gradient(90deg,rgba(250,204,21,.45),rgba(234,179,8,.45)),url('https://customer-assets.emergentagent.com/job_b62a9383-4270-4902-b72e-1808249e2424/artifacts/meain3v5_IMG_20260423_214002.jpg');
     box-shadow:0 10px 28px rgba(234,179,8,.35), inset 0 0 0 1px rgba(255,255,255,.08);
@@ -123,12 +153,15 @@
   .f-btn{width:20px;height:20px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);color:#fff;font-size:12px;margin-left:3px;cursor:pointer;pointer-events:auto;transition:background .15s}
   .f-btn:hover{background:rgba(0,0,0,.7)}
 
-  .tut-back{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);padding:20px}
+   .tut-back{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);padding:20px}
   .tut-back.show{display:flex}
   .tut-card{width:min(96vw,960px);border-radius:16px;overflow:hidden;background:#0a0812;border:1px solid rgba(167,139,250,.3);box-shadow:0 24px 64px rgba(0,0,0,.7)}
   .tut-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(90deg,rgba(124,58,237,.3),rgba(236,72,153,.2));color:#fff;font-weight:800;text-transform:uppercase;font-size:13px;letter-spacing:.12em}
   .tut-body{position:relative;width:100%;padding-top:56.25%;background:#000}
   .tut-body iframe, .tut-body video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+  .tut-fallback{position:absolute;inset:auto 0 12px 0;display:flex;justify-content:center;pointer-events:none}
+  .tut-fallback a{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(0,0,0,.75);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;backdrop-filter:blur(6px);transition:background .15s}
+  .tut-fallback a:hover{background:rgba(255,0,0,.65)}
 
   .intro-back{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;background:rgba(4,3,10,.96);padding:20px;backdrop-filter:blur(4px)}
   .intro-card{width:min(92vw,580px);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#120e22,#0a0812);border:1px solid rgba(167,139,250,.3);text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.7), 0 0 60px rgba(124,58,237,.15)}
@@ -159,7 +192,7 @@ src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/
     <div>
       <h1 class="brand">BIGBEAMERS</h1>
       <p class="subtitle">Ultimate Beaming Dashboard</p>
-      <button class="discord-btn" onclick="openExt('https://discord.gg/cdYS6M3hQ')">✦ JOIN DISCORD</button>
+      <button class="discord-btn" onclick="openExt('https://discord.gg/keT6hGPGS')">✦ JOIN DISCORD</button>
     </div>
     <button class="volume-toggle hidden" id="volBtn" onclick="toggleMute()" title="Toggle sound">
       <span id="volIcon">🔊</span>
@@ -175,19 +208,31 @@ src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/
 
   <div class="panel">
     <div class="section-title">Main Generator</div>
-    <button class="gen-btn b-splunk" onclick="openExt('https://app.beamers.si/u/BIGBEAMERS')">👑 SPLUNK</button>
+    <button class="gen-btn b-splunk" onclick="openExt('https://app.beamers.si/u/BIGBEAMERS')">
+      <span class="status-badge status-online"><span class="status-dot"></span>ONLINE</span>
+      💋 SPLUNK
+    </button>
   </div>
 
   <div class="panel">
     <div class="section-title">2nd Generator (2nd Priority)</div>
     <div class="grid2">
-      <button class="gen-btn b-immortal" onclick="openExt('https://beaming.cool/?code=MTk5NDMwNjEyNzQzNTgzNTg1Mg==')">↗ IMMORTAL</button>
-      <button class="gen-btn b-injuries" onclick="openExt('https://www.logged.tg/auth/injaries')">↗ INJURIES</button>
-      <button class="gen-btn b-shockify" onclick="openExt('https://shockify.st/?code=Mzk0NDM0NzE3ODA4OTU0Mzg3Nw==')" style="grid-column:1/-1">↗ SHOCKIFY</button>
+      <button class="gen-btn b-immortal" onclick="openExt('https://immortal.st/?code=NjU1NjEwNjg0OA==')">
+        <span class="status-badge status-online"><span class="status-dot"></span>ONLINE</span>
+        ↗ IMMORTAL
+      </button>
+      <button class="gen-btn b-injuries" onclick="openExt('https://www.logged.tg/auth/injaries')">
+        <span class="status-badge status-offline"><span class="status-dot"></span>OFFLINE</span>
+        ↗ INJURIES
+      </button>
+      <button class="gen-btn b-shockify" onclick="openExt('https://shockify.st/?code=Mzk0NDM0NzE3ODA4OTU0Mzg3Nw==')" style="grid-column:1/-1">
+        <span class="status-badge status-online"><span class="status-dot"></span>ONLINE</span>
+        ↗ SHOCKIFY
+      </button>
     </div>
   </div>
 
-  <div class="panel">
+   <div class="panel">
     <div class="section-title">Gamble Your Life Away</div>
     <p class="section-desc">Feeling lucky? Try your hand at the tables.</p>
     <button class="gen-btn b-gamble" onclick="openExt('https://bloxgame.com/')">↗ GAMBLE YOUR LIFE AWAY</button>
@@ -247,7 +292,7 @@ src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/
       <p class="intro-tag">Prepare to set sail on the ultimate journey!</p>
       <div class="intro-actions">
         <button class="hop-btn" onclick="enterDashboard()">▶ LET'S HOP IN</button>
-        <button class="discord-btn" onclick="openExt('https://discord.gg/cdYS6M3hQ')">✦ JOIN DISCORD</button>
+        <button class="discord-btn" onclick="openExt('https://discord.gg/keT6hGPGS')">✦ JOIN DISCORD</button>
       </div>
     </div>
   </div>
@@ -265,36 +310,74 @@ src="https://customer-assets.emergentagent.com/job_tutorial-central-3/artifacts/
 
 <script>
 const REFRESHER_URL = "https://www.logged.tg/tools/refresher?defaultFill=URL_STUFF_HERE";
-const INITIAL_VISITOR_COUNT = 1000;
 const openExt = (url) => window.open(url, '_blank', 'noopener,noreferrer');
 let muted = false;
- 
-/* ---------- VISITOR COUNTER (localStorage) ---------- */
-function getVisitorCount(){
-  const raw = localStorage.getItem('bigbeamers_visitors');
-  const n = raw ? parseInt(raw, 10) : NaN;
-  return Number.isFinite(n) && n >= INITIAL_VISITOR_COUNT ? n : INITIAL_VISITOR_COUNT;
+let currentYTId = null;
+
+ /* ---------- GLOBAL VISITOR COUNTER (Abacus public API) ----------
+   Counter is shared across ALL visitors worldwide, regardless of
+   device or location. Works on Vercel static hosting (no backend
+   needed).
+   IMPORTANT: Don't change COUNTER_NS/COUNTER_KEY after launch or
+   the count resets.
+*/
+const COUNTER_NS  = "bigbeamers-prod-2026";
+const COUNTER_KEY = "visitors";
+const INITIAL     = 1000;
+const ABACUS      = "https://abacus.jasoncameron.dev";
+
+async function safeFetch(url){
+  try {
+    const r = await fetch(url, { method: 'GET', cache: 'no-store' });
+    if(!r.ok) return null;
+    return await r.json();
+  } catch(_) { return null; }
 }
-function setVisitorCount(n){
-  localStorage.setItem('bigbeamers_visitors', String(n));
+async function ensureCounterExists(){
+  await safeFetch(`${ABACUS}/create/${COUNTER_NS}/${COUNTER_KEY}?initializer=${INITIAL}`);
 }
-function renderVisitorCount(pulse){
+async function fetchCount(){
+  const j = await safeFetch(`${ABACUS}/get/${COUNTER_NS}/${COUNTER_KEY}`);
+  if(j && typeof j.value === 'number') return j.value;
+  await ensureCounterExists();
+  const j2 = await safeFetch(`${ABACUS}/get/${COUNTER_NS}/${COUNTER_KEY}`);
+  return (j2 && typeof j2.value === 'number') ? j2.value : INITIAL;
+}
+async function hitCount(){
+  let n = null;
+  try {
+    if(!sessionStorage.getItem('bb_hit_done')){
+      const j = await safeFetch(`${ABACUS}/hit/${COUNTER_NS}/${COUNTER_KEY}`);
+      if(j && typeof j.value === 'number'){
+        n = j.value;
+        sessionStorage.setItem('bb_hit_done','1');
+      }
+    }
+  } catch(_) {}
+  if(n === null){
+    n = await fetchCount();
+  }
+  return n;
+}
+function renderCount(n, pulse){
   const el = document.getElementById('visitorCount');
   if(!el) return;
-  el.textContent = getVisitorCount().toLocaleString('en-US');
+  el.textContent = (n ?? 0).toLocaleString('en-US');
   if(pulse){
     el.classList.remove('pulse');
-    void el.offsetWidth; // force reflow for re-trigger
+    void el.offsetWidth;
     el.classList.add('pulse');
   }
 }
-renderVisitorCount(false);
-/* ---------------------------------------------------- */
+(async () => {
+  await ensureCounterExists();
+  const n = await fetchCount();
+  renderCount(n, false);
+})();
 
-function enterDashboard(){
-  // Increment visitor count and animate
-  setVisitorCount(getVisitorCount() + 1);
-  renderVisitorCount(true);
+async function enterDashboard(){
+  const n = await hitCount();
+  renderCount(n, true);
 
   document.getElementById('intro').style.display='none';
   const fv=document.getElementById('floatVideo');
@@ -311,32 +394,45 @@ function toggleMute(){
   const expVid = document.getElementById('expandedVideo');
   if(expVid) expVid.muted = muted;
   document.getElementById('volIcon').textContent=muted?'🔇':'🔊';
-}
-
+ }
 function expandVideo(e) {
   if(e) e.stopPropagation();
   const floatVid = document.getElementById('floatVideo');
   const container = document.getElementById('modalContent');
   const time = floatVid.currentTime;
-
   floatVid.pause();
   container.innerHTML = `<video id="expandedVideo" autoplay loop playsinline src="${floatVid.src}"></video>`;
-
   const expVid = document.getElementById('expandedVideo');
   expVid.currentTime = time;
   expVid.muted = muted;
-
   document.getElementById('tutTitle').textContent = "EXPANDED VIEW";
   document.getElementById('tutModal').classList.add('show');
-
   requestAnimationFrame(() => { expVid.play().catch(()=>{}); });
+  currentYTId = null;
 }
 
+/* ---- Reliable YouTube Embed ----
+   Uses youtube-nocookie + muted autoplay (required by most
+   browsers), playsinline for iOS, and a "Watch on YouTube"
+   fallback pill in case the embed is blocked.
+*/
 function openTutorial(id, title){
   document.getElementById('floatVideo').pause();
   document.getElementById('tutTitle').textContent = title;
+  currentYTId = id;
   const container = document.getElementById('modalContent');
-  container.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  const src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&rel=0&playsinline=1&modestbranding=1`;
+  container.innerHTML = `
+    <iframe
+      src="${src}"
+      title="${title}"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+    <div class="tut-fallback">
+      <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube</a>
+    </div>`;
   document.getElementById('tutModal').classList.add('show');
 }
 
@@ -344,6 +440,7 @@ function closeModal(e, force){
   if(e && e.target.closest('.tut-card') && !force) return;
   document.getElementById('tutModal').classList.remove('show');
   document.getElementById('modalContent').innerHTML = '';
+  currentYTId = null;
   const fv = document.getElementById('floatVideo');
   if(fv && document.getElementById('floating').classList.contains('show')){
     fv.play().catch(()=>{});
@@ -360,11 +457,7 @@ function closeFloat(e){
 function initDrag(){
   const el = document.getElementById('floating');
   const hdr = document.getElementById('fHeader');
-
-  let currentX = 0, currentY = 0;
-  let initialX, initialY;
-  let xOffset = 0, yOffset = 0;
-  let active = false;
+  let currentX = 0, currentY = 0, initialX, initialY, xOffset = 0, yOffset = 0, active = false;
 
   hdr.addEventListener('pointerdown', dragStart);
 
@@ -377,14 +470,12 @@ function initDrag(){
     window.addEventListener('pointermove', drag);
     window.addEventListener('pointerup', dragEnd);
   }
-
   function dragEnd() {
     active = false;
     window.removeEventListener('pointermove', drag);
     window.removeEventListener('pointerup', dragEnd);
-  }
-
-function drag(e) {
+ }
+ function drag(e) {
     if (!active) return;
     e.preventDefault();
     currentX = e.clientX - initialX;
